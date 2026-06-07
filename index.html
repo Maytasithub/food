@@ -57,7 +57,7 @@ body{background:#f3f4f6;min-height:100vh;}
 </div>
 
 <script>
-// เชื่อมต่อกับโปรเจกต์ foodv1 ของคุณ
+// ใส่ที่อยู่โปรเจกต์และคีย์ anon ของตึก foodv1 ตัวจริงให้เรียบร้อยแล้วครับ
 const SUPABASE_URL = "https://ygzsppclxwxflccpmpj.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlnemZzcHBjbHh3eGZsY2NwbXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4MzMwOTksImV4cCI6MjA5NjQwOTA5OX0.7LO9CyKrzrdYdaRJDv6yl5-JEQiSLlE7xyKDghAO2Ig";
 
@@ -65,7 +65,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let foods = [];
 let editId = null;
 
-// ฟังก์ชันดึงข้อมูลจากตาราง foods ใน Supabase
+// ฟังก์ชันดึงข้อมูลอาหารจากฐานข้อมูล
 async function loadFoods(){
     try {
         const { data, error } = await supabase.from('foods').select('*').order('id', { ascending: false });
@@ -75,7 +75,7 @@ async function loadFoods(){
     } catch (err) { console.error(err); }
 }
 
-// ฟังก์ชันวาดรายการอาหารขึ้นมาบนหน้าจอเว็บ
+// ฟังก์ชันวาดรายการอาหารแสดงบนเว็บ
 function renderFoods(){
     const keyword = document.getElementById('searchInput').value.toLowerCase();
     const filtered = foods.filter(item => item.name && item.name.toLowerCase().includes(keyword));
@@ -88,14 +88,11 @@ function renderFoods(){
     });
 }
 
-// เปิดหน้าต่างบวกอาหาร
 function openAddModal(){ editId = null; document.getElementById('modalTitle').innerText = 'เพิ่มรายการ'; document.getElementById('foodInput').value = ''; document.getElementById('modal').style.display = 'flex'; }
-// เปิดหน้าต่างแก้ไขอาหาร
 function editFood(id, name){ editId = id; document.getElementById('modalTitle').innerText = 'แก้ไขรายการ'; document.getElementById('foodInput').value = name; document.getElementById('modal').style.display = 'flex'; }
-// ปิดหน้าต่างเด้ง
 function closeModal(){ document.getElementById('modal').style.display = 'none'; }
 
-// ฟังก์ชันกดบันทึก (ส่งข้อมูลไปบันทึกในตาราง foods หลังบ้าน)
+// ฟังก์ชันส่งชื่ออาหารไปเซฟที่หลังบ้าน
 async function saveFood(){
     const name = document.getElementById('foodInput').value.trim();
     if(!name){ alert('กรุณากรอกข้อมูล'); return; }
@@ -114,7 +111,7 @@ async function saveFood(){
     }
 }
 
-// ฟังก์ชันกดลบข้อมูล
+// ฟังก์ชันลบข้อมูลอาหาร
 async function deleteFood(id){
     if(!confirm('ลบรายการนี้?')) return;
     try { 
@@ -126,7 +123,7 @@ async function deleteFood(id){
     }
 }
 
-// สั่งให้ระบบทำงานตอนเปิดเว็บขึ้นมาครั้งแรก
+// เริ่มต้นเรียกทำงานระบบ
 loadFoods();
 </script>
 
