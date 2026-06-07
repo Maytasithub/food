@@ -218,7 +218,7 @@ placeholder="เช่น พริกน้ำปลา">
 </div>
 
 <script>
-// เชื่อมต่อฐานข้อมูลของคุณอย่างสมบูรณ์
+// ใส่ค่าคอนฟิกจริงของโปรเจกต์คุณเรียบร้อยแล้ว
 const SUPABASE_URL = "https://ybophfodycewndkbiixf.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlib3BoZm9keWNld25ka2JpaXhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4MTU2OTAsImV4cCI6MjA5NjM5MTY5MH0.n_vmZsMHVAp0YsPoPIAgrmIpk1IunEG3VCZj0gjBBZc";
 
@@ -227,7 +227,6 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let foods = [];
 let editId = null;
 
-// ดึงข้อมูลทั้งหมด
 async function loadFoods(){
     try {
         const { data, error } = await supabase
@@ -248,7 +247,6 @@ async function loadFoods(){
     }
 }
 
-// วาด UI รายการอาหาร
 function renderFoods(){
     const keyword = document.getElementById('searchInput').value.toLowerCase();
     const filtered = foods.filter(item => item.name && item.name.toLowerCase().includes(keyword));
@@ -290,7 +288,6 @@ function closeModal(){
     document.getElementById('modal').style.display = 'none';
 }
 
-// บันทึกข้อมูล
 async function saveFood(){
     const name = document.getElementById('foodInput').value.trim();
 
@@ -323,7 +320,6 @@ async function saveFood(){
     }
 }
 
-// ลบข้อมูล
 async function deleteFood(id){
     if(!confirm('ลบรายการนี้?')) return;
 
