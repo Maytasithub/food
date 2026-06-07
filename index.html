@@ -57,6 +57,7 @@ body{background:#f3f4f6;min-height:100vh;}
 </div>
 
 <script>
+// ประกาศแค่รอบเดียวจบ ไม่มีซ้ำแน่นอน
 const SUPABASE_URL = "https://ygzsppclxwxflccpmpj.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlnemZzcHBjbHh3eGZsY2NwbXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4MzMwOTksImV4cCI6MjA5NjQwOTA5OX0.7LO9CyKrzrdYdaRJDv6yl5-JEQiSLlE7xyKDghAO2Ig";
 
@@ -64,7 +65,6 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let foods = [];
 let editId = null;
 
-// ดึงข้อมูล
 async function loadFoods(){
     try {
         const { data, error } = await supabase.from('foods').select('*').order('id', { ascending: false });
@@ -74,7 +74,6 @@ async function loadFoods(){
     } catch (err) { console.error(err); }
 }
 
-// วาดหน้าจอ
 function renderFoods(){
     const keyword = document.getElementById('searchInput').value.toLowerCase();
     const filtered = foods.filter(item => item.name && item.name.toLowerCase().includes(keyword));
@@ -87,12 +86,24 @@ function renderFoods(){
     });
 }
 
-function openAddModal(){ editId = null; document.getElementById('modalTitle').innerText = 'เพิ่มรายการ'; document.getElementById('foodInput').value = ''; document.getElementById('modal').style.display = 'flex'; }
-// แก้ไขจุดนี้: ฟังก์ชัน editFood ดึงชื่อมาแสดงในกล่องแก้ได้ถูกต้อง
-function editFood(id, name){ editId = id; document.getElementById('modalTitle').innerText = 'แก้ไขรายการ'; document.getElementById('foodInput').value = name; document.getElementById('modal').style.display = 'flex'; }
-function closeModal(){ document.getElementById('modal').style.display = 'none'; }
+function openAddModal(){ 
+    editId = null; 
+    document.getElementById('modalTitle').innerText = 'เพิ่มรายการ'; 
+    document.getElementById('foodInput').value = ''; 
+    document.getElementById('modal').style.display = 'flex'; 
+}
 
-// บันทึกข้อมูล
+function editFood(id, name){ 
+    editId = id; 
+    document.getElementById('modalTitle').innerText = 'แก้ไขรายการ'; 
+    document.getElementById('foodInput').value = name; 
+    document.getElementById('modal').style.display = 'flex'; 
+}
+
+function closeModal(){ 
+    document.getElementById('modal').style.display = 'none'; 
+}
+
 async function saveFood(){
     const name = document.getElementById('foodInput').value.trim();
     if(!name){ alert('กรุณากรอกข้อมูล'); return; }
@@ -101,7 +112,6 @@ async function saveFood(){
             const { error } = await supabase.from('foods').update({ name: name }).eq('id', editId); 
             if (error) throw error; 
         } else { 
-            // แก้ไขตรงนี้จาก Name เป็น name ตัวพิมพ์เล็กให้ตรงกับฐานข้อมูลหลังบ้าน
             const { error } = await supabase.from('foods').insert([{ name: name }]); 
             if (error) throw error; 
         }
@@ -112,7 +122,6 @@ async function saveFood(){
     }
 }
 
-// ลบข้อมูล
 async function deleteFood(id){
     if(!confirm('ลบรายการนี้?')) return;
     try { 
@@ -124,6 +133,7 @@ async function deleteFood(id){
     }
 }
 
+// เรียกทำงานตอนโหลดหน้าเว็บ
 loadFoods();
 </script>
 
